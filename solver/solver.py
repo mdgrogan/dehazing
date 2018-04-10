@@ -4,6 +4,7 @@ import sys
 #sys.path.insert(0, caffe_root+'python')
 import caffe
 import numpy as np
+import cv2
 
 # init
 caffe.set_mode_cpu()
@@ -19,9 +20,20 @@ for it in range(niter):
     solver.step(1)
 
     print("******************************************")
-    t1 = solver.net.blobs['data'].data[0]
-    t2 = solver.net.blobs['clear'].data[0]
-    t3 = solver.net.blobs['sum'].data[0]
+    data = solver.net.blobs['data'].data[0]
+    data = data.transpose((1, 2, 0));
+    data = data[:, :, ::-1]
+    cv2.imwrite("../img/data.jpg", data * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
+
+    clear = solver.net.blobs['clear'].data[0]
+    clear = clear.transpose((1, 2, 0));
+    clear = clear[:, :, ::-1]
+    cv2.imwrite("../img/clear.jpg", clear * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
+
+    out = solver.net.blobs['sum'].data[0]
+    out = out.transpose((1, 2, 0));
+    out = out[:, :, ::-1]
+    cv2.imwrite("../img/out.jpg", out * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     train_loss[it] = solver.net.blobs['loss'].data
     f.write('{0: d} '.format(it))

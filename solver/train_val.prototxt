@@ -8,16 +8,18 @@ layer {
     phase: TRAIN
   }
   transform_param {
-    mirror: true
+    mirror: false
     mean_value: 127.5
   }
   image_data_param {
     #root_folder: "/home/grogan/Projects/dehazing/data/train/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/train/"
     source: "/home/grogan/Projects/dehazing/data/Train.txt"
-    batch_size: 8
-    new_height: 550
-    new_width: 413
+    batch_size: 4
+    #new_height: 550
+    #new_width: 413
+    new_height: 413
+    new_width: 550
     shuffle: false #keep data and label aligned
   }
 }
@@ -37,9 +39,11 @@ layer {
     #root_folder: "/home/grogan/Projects/dehazing/data/test/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/test/"
     source: "/home/grogan/Projects/dehazing/data/Test.txt"
-    batch_size: 8
-    new_height: 550
-    new_width: 413
+    batch_size: 4
+    #new_height: 550
+    #new_width: 413
+    new_height: 413
+    new_width: 550
   }
 }
 
@@ -61,9 +65,11 @@ layer {
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
     source: "/home/grogan/Projects/dehazing/data/ClearTrain.txt"
     is_color: true
-    batch_size: 8
-    new_height: 550
-    new_width: 413
+    batch_size: 4
+    #new_height: 550
+    #new_width: 413
+    new_height: 413
+    new_width: 550
   }
 }
 # label data
@@ -84,9 +90,11 @@ layer {
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
     source: "/home/grogan/Projects/dehazing/data/ClearTest.txt"
     is_color: true
-    batch_size: 8
-    new_height: 550
-    new_width: 413
+    batch_size: 4
+    #new_height: 550
+    #new_width: 413
+    new_height: 413
+    new_width: 550
   }
 }
 
@@ -98,6 +106,14 @@ layer {
   convolution_param {
     num_output: 3
     kernel_size: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.001
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 
@@ -117,6 +133,14 @@ layer {
     num_output: 3
     kernel_size: 3
     pad:1
+    weight_filler {
+      type: "gaussian"
+      std: 0.001
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 
@@ -147,6 +171,14 @@ layer {
     num_output: 3
     kernel_size: 5
     pad:2
+    weight_filler {
+      type: "gaussian"
+      std: 0.001
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 layer {
@@ -175,6 +207,14 @@ layer {
     num_output: 3
     kernel_size: 7
     pad:3
+    weight_filler {
+      type: "gaussian"
+      std: 0.001
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 layer {
@@ -204,6 +244,14 @@ layer {
     num_output: 3
     kernel_size: 3
     pad:1
+    weight_filler {
+      type: "gaussian"
+      std: 0.001
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 
