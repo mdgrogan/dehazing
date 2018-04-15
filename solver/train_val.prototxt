@@ -9,13 +9,14 @@ layer {
   }
   transform_param {
     mirror: false
-    mean_value: 127.5
+    #mean_value: 127.5
+    scale: 0.00390625
   }
   image_data_param {
     #root_folder: "/home/grogan/Projects/dehazing/data/train/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/train/"
     source: "/home/grogan/Projects/dehazing/data/Train.txt"
-    batch_size: 4
+    batch_size: 32
     #new_height: 550
     #new_width: 413
     new_height: 413
@@ -33,13 +34,14 @@ layer {
   }
   transform_param {
     mirror: false
-    mean_value: 127.5
+    #mean_value: 127.5
+    scale: 0.00390625
   }
   image_data_param {
     #root_folder: "/home/grogan/Projects/dehazing/data/test/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/test/"
     source: "/home/grogan/Projects/dehazing/data/Test.txt"
-    batch_size: 4
+    batch_size: 32
     #new_height: 550
     #new_width: 413
     new_height: 413
@@ -58,14 +60,15 @@ layer {
   }
   transform_param {
     mirror: false
-    mean_value: 127.5
+    #mean_value: 127.5
+    scale: 0.00390625
   }
   image_data_param {
     #root_folder: "/home/grogan/Projects/dehazing/data/clear/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
     source: "/home/grogan/Projects/dehazing/data/ClearTrain.txt"
     is_color: true
-    batch_size: 4
+    batch_size: 32
     #new_height: 550
     #new_width: 413
     new_height: 413
@@ -83,14 +86,15 @@ layer {
   }
   transform_param {
     mirror: false
-    mean_value: 127.5
+    #mean_value: 127.5
+    scale: 0.00390625
   }
   image_data_param {
     #root_folder: "/home/grogan/Projects/dehazing/data/clear/"
     root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
     source: "/home/grogan/Projects/dehazing/data/ClearTest.txt"
     is_color: true
-    batch_size: 4
+    batch_size: 32
     #new_height: 550
     #new_width: 413
     new_height: 413

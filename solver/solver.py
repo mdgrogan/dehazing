@@ -15,6 +15,7 @@ niter = 1000 #?
 train_loss = np.zeros(niter)
 
 f = open('loss.txt', 'w+')
+f.close()
 
 for it in range(niter): 
     solver.step(1)
@@ -22,24 +23,27 @@ for it in range(niter):
     print("******************************************")
     data = solver.net.blobs['data'].data[0]
     data = data.transpose((1, 2, 0));
-    data = data[:, :, ::-1]
+    #data = data[:, :, ::-1]
     cv2.imwrite("../img/data.jpg", data * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     clear = solver.net.blobs['clear'].data[0]
     clear = clear.transpose((1, 2, 0));
-    clear = clear[:, :, ::-1]
+    #clear = clear[:, :, ::-1]
     cv2.imwrite("../img/clear.jpg", clear * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     out = solver.net.blobs['sum'].data[0]
     out = out.transpose((1, 2, 0));
-    out = out[:, :, ::-1]
+    #out = out[:, :, ::-1]
     cv2.imwrite("../img/out.jpg", out * 255.0,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     train_loss[it] = solver.net.blobs['loss'].data
+    print(solver.net.blobs['loss'].data)
+    f = open('loss.txt', 'a')
     f.write('{0: d} '.format(it))
     f.write('{0: f}\n'.format(train_loss[it]))
+    f.close();
 
-f.close()
+
 
 # solver.step(80000)
 
