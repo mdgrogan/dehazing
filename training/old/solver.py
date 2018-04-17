@@ -10,8 +10,9 @@ import cv2
 caffe.set_mode_cpu()
 
 solver = caffe.SGDSolver('solver.prototxt')
+solver.net.copy_from('AOD_Net.caffemodel')
 
-niter = 1000 #?
+niter = 10000 #?
 train_loss = np.zeros(niter)
 
 f = open('loss.txt', 'w+')

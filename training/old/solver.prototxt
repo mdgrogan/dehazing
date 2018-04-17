@@ -1,14 +1,14 @@
 net: "train_val.prototxt"
 test_iter: 20
 test_interval: 1000
-base_lr: 0.005          #base learning rate
+base_lr: 0.00001          #base learning rate
 lr_policy: "step"       #drop lr in step sizes indicated by gamma
 gamma: 0.5              #base_lr * gamma
 stepsize: 100000        #how often to drop lr
 display: 100
 max_iter: 20000
-momentum: 0.9
-weight_decay: 0.0001
+momentum: 0.5
+weight_decay: 0.00001
 snapshot: 100
 snapshot_prefix: "../models/model"
 solver_mode: CPU

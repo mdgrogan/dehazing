@@ -1,105 +1,31 @@
 name:"blah"
 layer {
-  name: "data"
-  type: "ImageData"
-  top: "data"
-  top: "ignored1"
-  include {
-    phase: TRAIN
-  }
-  transform_param {
-    mirror: false
-    #mean_value: 127.5
-    scale: 0.00390625
-  }
-  image_data_param {
-    #root_folder: "/home/grogan/Projects/dehazing/data/train/"
-    root_folder: "/home/grogan/Storage/CSCE633_Project_data/train/"
-    source: "/home/grogan/Projects/dehazing/data/Train.txt"
-    batch_size: 32
-    #new_height: 550
-    #new_width: 413
-    new_height: 413
-    new_width: 550
-    shuffle: false #keep data and label aligned
-  }
+    name: "input"
+    type: "Python"
+    top: "data"
+    top: "label"
+    include {
+        phase: TRAIN
+    }
+    python_param {
+        module: "pairedInputLayer"
+        layer: "pairedInput"
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/train", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "train.txt", "batch_size": 16, "width": 550, "height": 413}'
+    }
 }
 layer {
-  name: "data"
-  type: "ImageData"
-  top: "data"
-  top: "ignored1"
-  include {
-    phase: TEST
-  }
-  transform_param {
-    mirror: false
-    #mean_value: 127.5
-    scale: 0.00390625
-  }
-  image_data_param {
-    #root_folder: "/home/grogan/Projects/dehazing/data/test/"
-    root_folder: "/home/grogan/Storage/CSCE633_Project_data/test/"
-    source: "/home/grogan/Projects/dehazing/data/Test.txt"
-    batch_size: 32
-    #new_height: 550
-    #new_width: 413
-    new_height: 413
-    new_width: 550
-  }
-}
-
-# label data
-layer {
-  name: "clear"
-  type: "ImageData"
-  top: "clear"
-  top: "ignored2"
-  include {
-    phase: TRAIN
-  }
-  transform_param {
-    mirror: false
-    #mean_value: 127.5
-    scale: 0.00390625
-  }
-  image_data_param {
-    #root_folder: "/home/grogan/Projects/dehazing/data/clear/"
-    root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
-    source: "/home/grogan/Projects/dehazing/data/ClearTrain.txt"
-    is_color: true
-    batch_size: 32
-    #new_height: 550
-    #new_width: 413
-    new_height: 413
-    new_width: 550
-  }
-}
-# label data
-layer {
-  name: "clear"
-  type: "ImageData"
-  top: "clear"
-  top: "ignored2"
-  include {
-    phase: TEST
-  }
-  transform_param {
-    mirror: false
-    #mean_value: 127.5
-    scale: 0.00390625
-  }
-  image_data_param {
-    #root_folder: "/home/grogan/Projects/dehazing/data/clear/"
-    root_folder: "/home/grogan/Storage/CSCE633_Project_data/clear_images/"
-    source: "/home/grogan/Projects/dehazing/data/ClearTest.txt"
-    is_color: true
-    batch_size: 32
-    #new_height: 550
-    #new_width: 413
-    new_height: 413
-    new_width: 550
-  }
+    name: "input"
+    type: "Python"
+    top: "data"
+    top: "label"
+    include {
+        phase: TEST
+    }
+    python_param {
+        module: "pairedInputLayer"
+        layer: "pairedInput"
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/test", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "test.txt", "batch_size": 1, "width": 550, "height": 413}'
+    }
 }
 
 layer {
@@ -312,7 +238,7 @@ layer {
   name: "loss"
   type: "EuclideanLoss"
   bottom: "sum"
-  bottom: "clear"
+  bottom: "label"
   top: "loss"
 }
 
