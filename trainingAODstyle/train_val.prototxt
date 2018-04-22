@@ -10,7 +10,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/train", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "../data/trainOTS.txt", "batch_size": 16, "width": 550, "height": 413}'
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/train", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "../data/trainOTS.txt", "batch_size": 8, "width": 550, "height": 413}'
     }
 }
 layer {
@@ -24,7 +24,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/test", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "../data/testOTS.txt", "batch_size": 16, "width": 550, "height": 413}'
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/test", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/clear_images", "src_file": "../data/testOTS.txt", "batch_size": 8, "width": 550, "height": 413}'
     }
 }
 

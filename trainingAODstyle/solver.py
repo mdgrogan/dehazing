@@ -10,7 +10,7 @@ import cv2
 caffe.set_mode_cpu()
 
 solver = caffe.SGDSolver('solver.prototxt')
-solver.net.copy_from('AOD_Net.caffemodel')
+#solver.net.copy_from('AOD_Net.caffemodel')
 #solver.restore('../models/model_iter_100.solverstate')
 
 niter = 100000 #?

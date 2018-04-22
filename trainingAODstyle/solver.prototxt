@@ -8,13 +8,13 @@ test_iter: 10           # V / Vb to cover entire validation set
 test_interval: 5000     # how often to validate
 max_iter: 1000000         # #epochs * (T / Tb) 
 iter_size: 4            # accumulate gradients over iter_size * Tb
-base_lr: 0.00001        # base learning rate
+base_lr: 0.001        # base learning rate
 lr_policy: "step"       # drop lr in step sizes indicated by gamma
 gamma: 0.5              # base_lr * gamma
 stepsize: 100000        # how often to drop lr
 display: 100
-momentum: 0.5
-weight_decay: 0.00001
+momentum: 0.9
+weight_decay: 0.0001
 snapshot: 100
 snapshot_prefix: "../models/model"
 solver_mode: CPU
