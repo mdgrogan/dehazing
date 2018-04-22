@@ -1,0 +1,20 @@
+# training set size: T (12591)
+# training batch size: Tb (assuming 8)
+# validation set size: V (1399)
+# validation batch size: Vb (assuming 8)
+
+net: "train_val.prototxt"
+test_iter: 175           # V / Vb to cover entire validation set
+test_interval: 5000     # how often to validate
+max_iter: 16000         # #epochs * (T / Tb) 
+#iter_size: 4            # accumulate gradients over iter_size * Tb
+base_lr: 0.001        # base learning rate
+lr_policy: "step"       # drop lr in step sizes indicated by gamma
+gamma: 0.5              # base_lr * gamma
+stepsize: 10000        # how often to drop lr
+display: 100
+momentum: 0.9
+weight_decay: 0.0001
+snapshot: 100
+snapshot_prefix: "models/model"
+solver_mode: CPU
