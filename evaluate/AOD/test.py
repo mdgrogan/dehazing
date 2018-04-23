@@ -40,12 +40,14 @@ def test():
     caffe.set_mode_cpu();
 
     imagesnum=0;
-    for i in range(1, 19):
+    for it in range(1, 19):
         imagesnum = imagesnum + 1;
-        npstore = caffe.io.load_image('../img/%s.png'% str(i))
-        label = caffe.io.load_image('../img/%s-clear.png'% str(i))
-        height = npstore.shape[0]
-        width = npstore.shape[1]
+        #npstore = caffe.io.load_image('../img/%s.png'% str(it))
+        #label = caffe.io.load_image('../img/%s-clear.png'% str(it))
+        haze = cv2.imread('../img/%s.png'% str(it))
+        label = cv2.imread('../img/%s-clear.png'% str(it))
+        height = haze.shape[0]
+        width = haze.shape[1]
 
 
         templateFile = 'test_template.prototxt'
@@ -56,50 +58,52 @@ def test():
 
         net = caffe.Net('DeployT.prototxt', model, caffe.TEST);
         batchdata = []
-        data = npstore
+        data = haze/255.0
         data = data.transpose((2, 0, 1))
         batchdata.append(data)
         net.blobs['data'].data[...] = batchdata
 
-        batchdata1 = []
+        batchlabel = []
+        label = label/255.0
         label = label.transpose((2, 0, 1))
-        batchdata1.append(label)
-        net.blobs['label'].data[...] = batchdata1
+        batchlabel.append(label)
+        net.blobs['label'].data[...] = batchlabel
 
         net.forward();
-        print('iteration' + str(i))
 
         data = net.blobs['sum'].data[0];
         data = data.transpose((1, 2, 0));
-        data = data[:, :, ::-1]
 
-        savepath = '../img/' + str(i) + '_AOD-Net.png'
+        savepath = '../img/' + str(it) + '_AOD-Net.png'
         cv2.imwrite(savepath, data * 255.0)
 
-        # my gut says this isn't good
+        f = open('loss.txt', 'a')
+        f.write('{0:d} '.format(it))
+        f.write('{0:f}\n'.format(net.blobs['loss'].data))
+        f.close();
+
+        ################################
+        # post processing stuff
+        # my gut says this isn't a good way to convert to uint8
         data = data*255.0
         data = data.astype(np.uint8)
 
-        data1 = CLAHE(data, 0.6, 8)
-        savepath = '../img/' + str(i) + '_CLAHE-0.6-8.png'
-        cv2.imwrite(savepath, data1)
 
-        data2 = CLAHE(data, 0.4, 8)
-        savepath = '../img/' + str(i) + '_CLAHE-0.4-8.png'
-        cv2.imwrite(savepath, data2)
+        clip = 0.4
+        for ii in range(5):
+            gs = 4
+            for jj in range(4):
+                #H = CLAHE(haze, clip, gs)
+                #savepath = "../img/clahe/{0}_{1:.1f}-{2}-haze.png".format(it, clip, gs)
+                #cv2.imwrite(savepath, H)
 
-        data3 = CLAHE(data, 0.6, 12)
-        savepath = '../img/' + str(i) + '_CLAHE-0.6-12.png'
-        cv2.imwrite(savepath, data3)
+                I = CLAHE(data, clip, gs)
+                #savepath = "../img/clahe/{0}_{1:.1f}-{2}-AOD.png".format(it, clip, gs)
+                savepath = "../img/clahe/{0}_{1:.1f}-{2}.png".format(it, clip, gs)
+                cv2.imwrite(savepath, I)
 
-        data4 = CLAHE(data, 0.4, 12)
-        savepath = '../img/' + str(i) + '_CLAHE-0.4-12.png'
-        cv2.imwrite(savepath, data4)
-
-        f = open('loss.txt', 'a')
-        f.write('{0:d} '.format(i))
-        f.write('{0:f}\n'.format(net.blobs['loss'].data))
-        f.close();
+                gs += 4
+            clip += 0.1
 
     print('image numbers:',imagesnum)
 

@@ -15,10 +15,10 @@ for ii = 1:18
    ground_truth = sprintf('img/%d-clear.png', ii);
    hazy = sprintf('img/%d.png', ii);
    l_AOD = sprintf('img/%d_AOD-Net.png', ii);
-   l_I1 = sprintf('img/%d_CLAHE-0.4-8.png', ii);
-   l_I2 = sprintf('img/%d_CLAHE-0.4-12.png', ii);
-   l_I3 = sprintf('img/%d_CLAHE-0.6-8.png', ii);
-   l_I4 = sprintf('img/%d_CLAHE-0.6-12.png', ii);
+   l_I1 = sprintf('img/clahe/%d_CLAHE-0.4-8.png', ii);
+   l_I2 = sprintf('img/clahe/%d_CLAHE-0.4-12.png', ii);
+   l_I3 = sprintf('img/clahe/%d_CLAHE-0.6-8.png', ii);
+   l_I4 = sprintf('img/clahe/%d_CLAHE-0.6-12.png', ii);
 
 
    L = imread(ground_truth);
