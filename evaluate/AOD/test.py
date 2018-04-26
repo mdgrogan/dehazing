@@ -40,7 +40,7 @@ def test():
     caffe.set_mode_cpu();
 
     imagesnum=0;
-    for it in range(1, 19):
+    for it in range(1, 5):
         imagesnum = imagesnum + 1;
         #npstore = caffe.io.load_image('../img/%s.png'% str(it))
         #label = caffe.io.load_image('../img/%s-clear.png'% str(it))
@@ -89,20 +89,15 @@ def test():
         data = data.astype(np.uint8)
 
 
-        clip = 0.4
-        for ii in range(5):
-            gs = 4
-            for jj in range(4):
-                #H = CLAHE(haze, clip, gs)
-                #savepath = "../img/clahe/{0}_{1:.1f}-{2}-haze.png".format(it, clip, gs)
-                #cv2.imwrite(savepath, H)
-
+        clip = 0.1
+        for ii in range(10):
+            gs = 2
+            for jj in range(11):
                 I = CLAHE(data, clip, gs)
-                #savepath = "../img/clahe/{0}_{1:.1f}-{2}-AOD.png".format(it, clip, gs)
                 savepath = "../img/clahe/{0}_{1:.1f}-{2}.png".format(it, clip, gs)
                 cv2.imwrite(savepath, I)
 
-                gs += 4
+                gs += 2
             clip += 0.1
 
     print('image numbers:',imagesnum)
