@@ -110,7 +110,7 @@ def imageMean(im):
     im_Ymean = im_Ytuple[0]
     return im_Ymean
 
-def generate_OTS_data():
+def generate_OTS_data(limit):
     OTS_train_dir = '/home/grogan/Storage/CSCE633_Project_data/train'
     OTS_clear_dir = '/home/grogan/Storage/CSCE633_Project_data/clear_images'
     caffe.set_mode_cpu()
@@ -123,9 +123,89 @@ def generate_OTS_data():
             continue
 
         imagesnum += 1
-        print('{}/{}'.format(OTS_train_dir, imagename))
+        #print('{}/{}'.format(OTS_train_dir, imagename))
         haze = cv2.imread('{}/{}'.format(OTS_train_dir, imagename))
         clear = cv2.imread('{}/{}'.format(OTS_clear_dir, clear_imagename))
+        height = haze.shape[0]
+        width = haze.shape[1]
+
+        templateFile = 'test_template.prototxt'
+        EditFcnProto(templateFile, height, width)
+
+        data = runAOD(haze)
+
+        m_b = meanBrightness(data)
+        g_v = globalVar(data)
+        h_e = histEntropy(data)
+        c_r = contrastRatio(data)
+        i_m = imageMean(data)
+
+        f_data = img_as_float(data)
+        f_clear = img_as_float(clear)
+        psnr_data = psnr(f_data, f_clear)
+        ssim_data = ssim(f_data, f_clear, multichannel=True)
+        
+        # clip tile psnr ssim
+        bestPSNR = [0,0,0,0]
+        bestSSIM = [0,0,0,0]
+
+        clip = 0.1
+        for ii in range(20):
+            tile = 1
+            for jj in range(25):
+                output = CLAHE(data, clip, tile)
+                f_output = img_as_float(output)
+                
+                psnr_output = psnr(f_output, f_clear)
+                ssim_output = ssim(f_output, f_clear, multichannel=True)
+                print("img:{0}, clip:{1:.1f}, grid:{2}".format(imagesnum, clip, tile))
+                print("psnr:{0:4f}, ssim:{1:4f}".format(psnr_output, ssim_output))
+                if (psnr_output > bestPSNR[2]):
+                    bestPSNR = [clip, tile, psnr_output, ssim_output]
+                    print("new best psnr:{0:4f}, ssim:{1:4f}".format(psnr_output, ssim_output))
+                if (ssim_output > bestSSIM[3]):
+                    bestSSIM = [clip, tile, psnr_output, ssim_output]
+                    print("new best ssim:{0:4f}, ssim:{1:4f}".format(psnr_output, ssim_output))
+
+                tile += 1
+            clip += 0.1
+
+        f = open('bestPSNR.txt', 'a')
+        f.write("{0:.4f} {1:.4f} {2:.4f} {3:.4f} {4:.4f} "
+                "{5:.1f} {6:d} {7:.4f} {8:.4f} {9:.4f} {10:.4f}\n"
+                .format(m_b[0], g_v, h_e, c_r[0], i_m,
+                        bestPSNR[0], bestPSNR[1], bestPSNR[2], bestPSNR[3],
+                        psnr_data, ssim_data))
+        f.close()
+        f = open('bestSSIM.txt', 'a')
+        f.write("{0:.4f} {1:.4f} {2:.4f} {3:.4f} {4:.4f} "
+                "{5:.1f} {6:d} {7:.4f} {8:.4f} {9:.4f} {10:.4f}\n"
+                .format(m_b[0], g_v, h_e, c_r[0], i_m,
+                        bestSSIM[0], bestSSIM[1], bestSSIM[2], bestSSIM[3],
+                        psnr_data, ssim_data))
+        f.close()
+
+        # some condition goes here if you don't want all 300,000 images
+        if (imagesnum == limit):
+            break
+    
+def generate_ITS_data(limit):
+    ITS_train_dir = '/home/grogan/Storage/CSCE633_Project_data/its/hazy'
+    ITS_clear_dir = '/home/grogan/Storage/CSCE633_Project_data/its/clear'
+    caffe.set_mode_cpu()
+    imagesnum = 0
+    for imagename in os.listdir(ITS_train_dir):
+        clear_imagename = (imagename.split('_'))[0] + '.png'
+        if (os.path.isfile(r'{}/{}'.format(ITS_train_dir, imagename) == False)):
+            continue
+        if (os.path.isfile(r'{}/{}'.format(ITS_clear_dir, clear_imagename) == False)):
+            continue
+
+        imagesnum += 1
+        print('{}/{}'.format(ITS_train_dir, imagename))
+        print('{}/{}'.format(ITS_train_dir, clear_imagename))
+        haze = cv2.imread('{}/{}'.format(ITS_train_dir, imagename))
+        clear = cv2.imread('{}/{}'.format(ITS_clear_dir, clear_imagename))
         height = haze.shape[0]
         width = haze.shape[1]
 
@@ -165,41 +245,42 @@ def generate_OTS_data():
                 if (psnr_output > bestPSNR[2]):
                     #maxPSNR = psnr_output
                     bestPSNR = [clip, tile, psnr_output, ssim_output]
-                    print("new best psnr:{0:4f}, ssim:{1:4f}\n".format(psnr_output, ssim_output))
+                    print("new best psnr:{0:4f}, ssim:{1:4f}".format(psnr_output, ssim_output))
                 if (ssim_output > bestSSIM[3]):
                     bestSSIM = [clip, tile, psnr_output, ssim_output]
-                    print("new best ssim:{0:4f}, ssim:{1:4f}\n".format(psnr_output, ssim_output))
+                    print("new best ssim:{0:4f}, ssim:{1:4f}".format(psnr_output, ssim_output))
 
                 tile += 1
             clip += 0.1
 
         f = open('bestPSNR.txt', 'a')
-        f.write("{0:d} {1:.4f} {2:.4f} {3:.4f} {4:.4f} {5:.4f} "
-                "{6:.1f} {7:d} {8:.4f} {9:.4f} {10:.4f} {11:.4f}\n"
-                .format(imagesnum, m_b[0], g_v, h_e, c_r[0], i_m,
+        f.write("{0:.4f} {1:.4f} {2:.4f} {3:.4f} {4:.4f} "
+                "{5:.1f} {6:d} {7:.4f} {8:.4f} {9:.4f} {10:.4f}\n"
+                .format(m_b[0], g_v, h_e, c_r[0], i_m,
                         bestPSNR[0], bestPSNR[1], bestPSNR[2], bestPSNR[3],
                         psnr_data, ssim_data))
         f.close()
         f = open('bestSSIM.txt', 'a')
-        f.write("{0:d} {1:.4f} {2:.4f} {3:.4f} {4:.4f} {5:.4f} "
-                "{6:.1f} {7:d} {8:.4f} {9:.4f} {10:.4f} {11:.4f}\n"
-                .format(imagesnum, m_b[0], g_v, h_e, c_r[0], i_m,
+        f.write("{0:.4f} {1:.4f} {2:.4f} {3:.4f} {4:.4f} "
+                "{5:.1f} {6:d} {7:.4f} {8:.4f} {9:.4f} {10:.4f}\n"
+                .format(m_b[0], g_v, h_e, c_r[0], i_m,
                         bestSSIM[0], bestSSIM[1], bestSSIM[2], bestSSIM[3],
                         psnr_data, ssim_data))
         f.close()
-        print(imagesnum)
+
         # some condition goes here if you don't want all 300,000 images
-        break
-    
+        if (imagesnum == limit):
+            break
 
 def main():
     f = open('bestPSNR.txt', 'w+')
-    f.write("img mB gV hE cR iM clip tile outputPSNR outputSSIM aodPSNR aodSSIM\n")
+    f.write("mB gV hE cR iM clip tile outputPSNR outputSSIM aodPSNR aodSSIM\n")
     f.close()
     f = open('bestSSIM.txt', 'w+')
-    f.write("img mB gV hE cR iM clip tile outputPSNR outputSSIM aodPSNR aodSSIM\n")
+    f.write("mB gV hE cR iM clip tile outputPSNR outputSSIM aodPSNR aodSSIM\n")
     f.close()
-    generate_OTS_data()
+    generate_OTS_data(1)
+    generate_ITS_data(1)
 
 
 if __name__ == '__main__':
