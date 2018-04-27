@@ -10,7 +10,7 @@ import cv2
 caffe.set_mode_cpu()
 
 solver = caffe.SGDSolver('solver.prototxt')
-#solver.net.copy_from('AOD-Net.caffemodel')
+solver.net.copy_from('AOD_Net.caffemodel')
 #solver.restore('../models/model_iter_100.solverstate')
 
 niter = 100000 #?
@@ -32,6 +32,7 @@ for it in range(niter):
 
     out = solver.net.blobs['sum'].data[0]
     out = out.transpose((1, 2, 0))
+    out = out[:, :, ::-1]
     cv2.imwrite("img/out.jpg", 255*out,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     train_loss[it] = solver.net.blobs['loss'].data

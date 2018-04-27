@@ -58,7 +58,7 @@ class pairedInput(caffe.Layer):
             label = cv2.resize(label, (295, 215))
             # [0,255] -> [0,1]
             #im = im/255.0
-            #label = label/255.0
+            label = label/255.0
             # (H,W,C) -> (C,H,W)
             im = im.transpose((2,0,1))
             #label = label.transpose((2,0,1))
@@ -80,6 +80,7 @@ class pairedInput(caffe.Layer):
         base = scene.split("_")
         # 0 flag indicates grayscale
         label = cv2.imread(self.label_folder + "/" + base[0]+"_"+base[1] + ".png", 0)
+        #label = cv2.imread(self.label_folder + "/" + base[0]+"_"+base[1] + ".png",1)
         im = cv2.imread(self.data_folder + "/" + scene + ".png")
         self._cur += 1
         return im, label

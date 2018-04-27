@@ -6,7 +6,7 @@ it = []
 loss = []
 for i in range(len(data)):
     it.append(data[i, 0])
-    loss.append(data[i, 2])
+    loss.append(data[i, 1])
 
 plt.plot(it, loss)
 plt.title('Loss')

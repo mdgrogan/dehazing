@@ -10,7 +10,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/its/hazy", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/its/trans", "src_file": "../data/trainITS.txt", "batch_size": 16, "width": 620, "height": 460}'
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/its/hazy", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/its/trans", "src_file": "../data/trainITS.txt", "batch_size": 8, "width": 620, "height": 460}'
     }
 }
 layer {
@@ -24,7 +24,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/its/hazy", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/its/trans", "src_file": "../data/testITS.txt", "batch_size": 16, "width": 620, "height": 460}'
+        param_str :'{"data_folder": "/home/grogan/Storage/CSCE633_Project_data/its/hazy", "label_folder": "/home/grogan/Storage/CSCE633_Project_data/its/trans", "src_file": "../data/testITS.txt", "batch_size": 8, "width": 620, "height": 460}'
     }
 }
 layer {
@@ -37,7 +37,7 @@ layer {
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -64,7 +64,7 @@ layer {
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -91,7 +91,7 @@ layer {
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -118,7 +118,7 @@ layer {
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -179,11 +179,11 @@ layer {
   bottom: "pool1"
   top: "conv2A"
   param {
-    lr_mult: 1
+    lr_mult: 2
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -221,11 +221,11 @@ layer {
   bottom: "pool1"
   top: "conv2B"
   param {
-    lr_mult: 1
+    lr_mult: 2
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -263,11 +263,11 @@ layer {
   bottom: "pool1"
   top: "conv2C"
   param {
-    lr_mult: 1
+    lr_mult: 2
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -327,11 +327,11 @@ layer {
   bottom: "pool2"
   top: "conv3"
   param {
-    lr_mult: 1
+    lr_mult: 2
     decay_mult: 1
   }
   param {
-    lr_mult: 2
+    lr_mult: 1
     decay_mult: 0
   }
   convolution_param {
@@ -363,8 +363,8 @@ layer {
   }
 }
 layer {
-  name: "brelu3"
-  type: "BReLU"
+  name: "relu3"
+  type: "ReLU"
   bottom: "bn3"
   top: "bn3"
 }

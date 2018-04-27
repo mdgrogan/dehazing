@@ -1,4 +1,4 @@
-lines = [line.rstrip('\n').split(' ') for line in open("hey.txt", "r")]
+lines = [line.rstrip('\n').split(' ') for line in open("output.txt", "r")]
 
 # lines[0][X] = header
 # lines[X][0] = image 

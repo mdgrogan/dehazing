@@ -1,5 +1,5 @@
 fp = fopen('output.txt','w+');
-fprintf(fp, 'image# mean_l var_l entropy e_r e_g e_b clip tile PSNR SSIM pre_PSNR pre_SSIM\n');
+fprintf(fp, 'image mean_l var_l entropy e_r e_g e_b clip tile PSNR SSIM pre_PSNR pre_SSIM\n');
 
 for it = 1:100
    ground_truth = sprintf('img/%d-clear.png', it);

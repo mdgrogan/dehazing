@@ -25,24 +25,28 @@ for it in range(niter):
     data = solver.net.blobs['data'].data[0]
     data = data.transpose((1, 2, 0));
     #data = data[:, :, ::-1]
-    cv2.imwrite("../img/data.jpg", data,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    #cv2.imwrite("img/data.jpg", 255*data,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    cv2.imwrite("img/data.jpg", data,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     label = solver.net.blobs['label'].data[0]
     label = label.transpose((1, 2, 0));
+    label = np.repeat(label, 3, axis=2)
     #clear = clear[:, :, ::-1]
-    cv2.imwrite("../img/label.jpg", label,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    cv2.imwrite("img/label.jpg", 255*label,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    #cv2.imwrite("img/label.jpg", label,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     out = solver.net.blobs['bn3'].data[0]
     out = out.transpose((1, 2, 0))
     out = np.repeat(out, 3, axis=2)
     #out = out[:, :, ::-1]
-    cv2.imwrite("../img/out.jpg", out,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    cv2.imwrite("img/out.jpg", 255*out,[cv2.IMWRITE_JPEG_QUALITY, 100])
+    #cv2.imwrite("img/out.jpg", out,[cv2.IMWRITE_JPEG_QUALITY, 100])
 
     train_loss[it] = solver.net.blobs['loss'].data
     print(solver.net.blobs['loss'].data)
     f = open('loss.txt', 'a')
-    f.write('{d} '.format(it))
-    f.write('{f}\n'.format(train_loss[it]))
+    f.write('{0:d} '.format(it))
+    f.write('{0:f}\n'.format(train_loss[it]))
     f.close();
 
 
