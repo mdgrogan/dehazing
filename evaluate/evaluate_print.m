@@ -1,7 +1,7 @@
 fp = fopen('output.txt','w+');
-fprintf(fp, 'image# mean_l var_l entropy e_r e_g e_b clip tile PSNR SSIM\n');
+fprintf(fp, 'image# mean_l var_l entropy e_r e_g e_b clip tile PSNR SSIM pre_PSNR pre_SSIM\n');
 
-for it = 1:4
+for it = 1:100
    ground_truth = sprintf('img/%d-clear.png', it);
    hazy = sprintf('img/%d.png', it);
    l_AOD = sprintf('img/%d_AOD-Net.png', it);
@@ -10,14 +10,14 @@ for it = 1:4
    H = imread(hazy);
    AOD = imread(l_AOD);
    
-   [peaksnr, ~] = psnr(H, L); 
-   fprintf('\n Haze PSNR(%d) = %0.4f', it, peaksnr);   
-   [peaksnr, ~] = psnr(AOD, L); 
-   fprintf('\n AOD PSNR(%d) = %0.4f', it, peaksnr);  
-   [ssimval, ~] = ssim(H, L); 
-   fprintf('\n Haze SSIM(%d) = %0.4f', it, ssimval); 
-   [ssimval, ~] = ssim(AOD, L); 
-   fprintf('\n AOD SSIM(%d) = %0.4f', it, ssimval);
+   %[peaksnr, ~] = psnr(H, L); 
+   %fprintf('\n Haze PSNR(%d) = %0.4f', it, peaksnr);   
+   [pre_PSNR, ~] = psnr(AOD, L); 
+   %fprintf('\n AOD PSNR(%d) = %0.4f', it, peaksnr);  
+   %[ssimval, ~] = ssim(H, L); 
+   %fprintf('\n Haze SSIM(%d) = %0.4f', it, ssimval); 
+   [pre_SSIM, ~] = ssim(AOD, L); 
+   %fprintf('\n AOD SSIM(%d) = %0.4f', it, ssimval);
    
    
    gray = rgb2gray(AOD);
@@ -45,8 +45,8 @@ for it = 1:4
            [ssimval, ~] = ssim(I, L); 
            fprintf('\n %d_%0.1f-%d SSIM = %0.4f', it, clip, gs, ssimval);
 
-           fprintf(fp, '%d %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.1f %d %0.4f %0.4f\n', ...
-                        it, ml, vl, e, e_r, e_g, e_b, clip, gs, peaksnr, ssimval);
+           fprintf(fp, '%d %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.1f %d %0.4f %0.4f %0.4f %0.4f\n', ...
+                        it, ml, vl, e, e_r, e_g, e_b, clip, gs, peaksnr, ssimval, pre_PSNR, pre_SSIM);
            
            gs = gs + 2;
        end

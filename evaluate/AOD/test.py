@@ -40,7 +40,7 @@ def test():
     caffe.set_mode_cpu();
 
     imagesnum=0;
-    for it in range(1, 5):
+    for it in range(1, 101):
         imagesnum = imagesnum + 1;
         #npstore = caffe.io.load_image('../img/%s.png'% str(it))
         #label = caffe.io.load_image('../img/%s-clear.png'% str(it))
