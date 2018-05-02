@@ -1,4 +1,4 @@
-name: "DehazeNet"
+name: "Something"
 layer {
     name: "input"
     type: "Python"
@@ -10,7 +10,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"src_file": "data/train.txt", "batch_size": 1, "width": 256, "height": 256}'
+        param_str :'{"src_file": "data/train.txt", "batch_size": 32, "width": 256, "height": 256}'
     }
 }
 layer {
@@ -24,7 +24,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"src_file": "data/test.txt", "batch_size": 1, "width": 256, "height": 256}'
+        param_str :'{"src_file": "data/test.txt", "batch_size": 32, "width": 256, "height": 256}'
     }
 }
 
@@ -513,8 +513,8 @@ layer {
 #  }
 #}
 layer {
-  name: "brelu4"
-  type: "BReLU"
+  name: "relu4"
+  type: "ReLU"
   bottom: "conv4"
   top: "conv4"
 }
@@ -1004,8 +1004,8 @@ layer {
 #  }
 #}
 layer {
-  name: "brelu4_"
-  type: "BReLU"
+  name: "relu4_"
+  type: "ReLU"
   bottom: "conv4_"
   top: "conv4_"
 }

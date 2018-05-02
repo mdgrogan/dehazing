@@ -1,4 +1,4 @@
-name: "DehazeNet"
+name: "Something"
 layer {
     name: "input"
     type: "Python"
@@ -10,7 +10,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"src_file": "data/train.txt", "batch_size": 1, "width": 256, "height": 256}'
+        param_str :'{"src_file": "data/train.txt", "batch_size": 32, "width": 256, "height": 256}'
     }
 }
 layer {
@@ -24,7 +24,7 @@ layer {
     python_param {
         module: "pairedInputLayer"
         layer: "pairedInput"
-        param_str :'{"src_file": "data/test.txt", "batch_size": 1, "width": 256, "height": 256}'
+        param_str :'{"src_file": "data/test.txt", "batch_size": 32, "width": 256, "height": 256}'
     }
 }
 
@@ -497,26 +497,26 @@ layer {
     }
   }
 }
-layer {
-  name: "bn4"
-  type: "BatchNorm"
-  bottom: "conv4"
-  top: "bn4"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
-}
+#layer {
+#  name: "bn4"
+#  type: "BatchNorm"
+#  bottom: "conv4"
+#  top: "bn4"
+#  param {
+#    lr_mult: 1
+#  }
+#  param {
+#    lr_mult: 1
+#  }
+#  param {
+#    lr_mult: 1
+#  }
+#}
 layer {
   name: "brelu4"
   type: "BReLU"
-  bottom: "bn4"
-  top: "bn4"
+  bottom: "conv4"
+  top: "conv4"
 }
 ######################################################
 #############################################################
@@ -988,34 +988,34 @@ layer {
     }
   }
 }
-layer {
-  name: "bn4_"
-  type: "BatchNorm"
-  bottom: "conv4_"
-  top: "bn4_"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
-}
+#layer {
+#  name: "bn4_"
+#  type: "BatchNorm"
+#  bottom: "conv4_"
+#  top: "bn4_"
+#  param {
+#    lr_mult: 1
+#  }
+#  param {
+#    lr_mult: 1
+#  }
+#  param {
+#    lr_mult: 1
+#  }
+#}
 layer {
   name: "brelu4_"
   type: "BReLU"
-  bottom: "bn4_"
-  top: "bn4_"
+  bottom: "conv4_"
+  top: "conv4_"
 }
 ######################################################
 
 layer {
   name: "out"
   type: "Concat"
-  bottom: "bn4"
-  bottom: "bn4_"
+  bottom: "conv4"
+  bottom: "conv4_"
   top: "out"
   concat_param {
     axis: 1

@@ -10,10 +10,10 @@ import cv2
 caffe.set_mode_cpu()
 
 solver = caffe.SGDSolver('solver.prototxt')
-#solver.net.copy_from('model_iter_300000.caffemodel')
+#solver.net.copy_from('models/model_iter_150.caffemodel')
 #solver.restore('../models/model_iter_100.solverstate')
 
-niter = 100000 #?
+niter = 4000 #?
 train_loss = np.zeros(niter)
 
 f = open('loss.txt', 'w+')
@@ -44,13 +44,13 @@ for it in range(niter):
     #print(solver.net.blobs['conv2A'].data[0])
     #print(solver.net.blobs['conv3A'].data[0])
     #print("bn4_\n", solver.net.blobs['bn4_'].data[0])
-    print("out\n [{0:.8f} {1:.8f}]".format(solver.net.blobs['out'].data[0,0,0,0,],
-                                          solver.net.blobs['out'].data[0,1,0,0,]))
-    print("label\n", solver.net.blobs['label'].data[0,:,0,0])
+    #print("out\n [{0:.8f} {1:.8f}]".format(solver.net.blobs['out'].data[0,0,0,0,],
+    #                                      solver.net.blobs['out'].data[0,1,0,0,]))
+    #print("label\n", solver.net.blobs['label'].data[0,:,0,0])
 
 
     train_loss[it] = solver.net.blobs['loss'].data
-    print("loss:", solver.net.blobs['loss'].data)
+    #print("loss:", solver.net.blobs['loss'].data)
     f = open('loss.txt', 'a')
     f.write('{0:d} '.format(it))
     f.write('{0:f}\n'.format(train_loss[it]))
